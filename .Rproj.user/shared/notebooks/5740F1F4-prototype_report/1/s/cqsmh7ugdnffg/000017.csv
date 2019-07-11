@@ -1,0 +1,6 @@
+"0","sum(aggregate_rids$cv > 0.12, na.rm = TRUE) /nrow(aggregate_rids)
+"
+"1","[1]"
+"1"," 0.4716157"
+"1","
+"

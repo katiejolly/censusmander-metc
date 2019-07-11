@@ -1,0 +1,9 @@
+{
+    "path" : "~/censusmander/code/example_data",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

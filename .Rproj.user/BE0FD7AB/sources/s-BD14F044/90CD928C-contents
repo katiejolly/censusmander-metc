@@ -1,0 +1,183 @@
+---
+title: "Prototype Report"
+author: "Katie Jolly"
+output: 
+  html_document:
+    theme: "cosmo"
+    code_folding: hide
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.path = "code/example_data/output/")
+
+options(tigris_class = "sf")
+```
+
+
+```{r results = 'hide'}
+# packages and data
+
+library(tigris)
+library(sf)
+library(tidyverse)
+library(randomcoloR)
+library(leaflet)
+
+# Ramsey county block groups
+
+bg <- block_groups(state = "MN", county = "Ramsey") %>%
+  st_transform(26915)
+
+# True census tracts
+
+tract <- tracts(state = "MN", county = "Ramsey") %>%
+  st_transform(26915)
+
+# Jolly tracts
+
+aggregate <- st_read("code/output/prototype.shp") %>%
+  st_transform(26915)
+
+```
+
+
+As an initial picture, there are 401 block groups in Ramsey county.
+
+```{r}
+leaflet(bg %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = "#faf7cf",
+              weight = 2,
+              opacity = 0.8,
+              color = "#b0b5bf",
+              fillOpacity = 0.6)
+```
+
+
+And 137 census tracts.
+
+```{r}
+leaflet(tract %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = "#e89f9b",
+              weight = 2,
+              opacity = 0.8,
+              color = "#b0b5bf",
+              fillOpacity = 0.6)
+```
+
+As an example about how to aggregate the block to groups to a larger geography to see a decrease in the margin of error I'll use `percent white` as the target variable. The spatial distribution of the total white population is mapped below.
+
+```{r}
+percent_white <- read_csv("code/example_data/white_prop_est_ramsey.csv") %>% left_join(read_csv("code/example_data/race_moe_est_ramsey.csv"))
+
+percent_white_bg <- bg %>% left_join(percent_white %>% mutate(id = as.character(id)), by = c("GEOID" = "id"))
+
+pal <- colorNumeric("RdPu", domain = percent_white_bg$estimate_not_hispanic_or_latino_white_alone)
+
+leaflet(percent_white_bg %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(estimate_not_hispanic_or_latino_white_alone),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  fillOpacity = 0.7) %>%
+  addLegend(position = "bottomright",
+            pal = pal,
+            values = ~estimate_not_hispanic_or_latino_white_alone,
+            title = "Total white population")
+```
+
+But we know that some block groups have high margins of error. Mapped below are the coefficients of variation (cv), or the percent of the estimate covered by the margin of error. 
+
+```{r}
+percent_white_bg <- percent_white_bg %>%
+  mutate(cv = if_else(estimate_not_hispanic_or_latino_white_alone == 0, NA_real_, (margin_of_error_not_hispanic_or_latino_white_alone / 1.645) / estimate_not_hispanic_or_latino_white_alone))
+
+pal <- colorNumeric("PuBu", domain = percent_white_bg$cv, na.color = "#edf0f2")
+
+leaflet(percent_white_bg %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cv),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  fillOpacity = 0.7) %>%
+  addLegend(position = "bottomright",
+            pal = pal,
+            values = ~cv,
+            title = "Total white population coefficient of variation")
+```
+
+We can see below the most common cv is about 0.12, or 12% of the estimate for a particular block group. The general guideline is that estimates with a cv less than 0.12 are "highly reliable." Only 30% of our block groups meet that threshold. 
+
+```{r}
+#sum(percent_white_bg$cv > 0.12, na.rm = TRUE) /nrow(percent_white_bg)
+
+ggplot(percent_white_bg, aes(x = cv)) +
+  geom_histogram(fill = "#688da6", color = "white") +
+  scale_x_continuous(breaks = seq(0, 1, .1)) +
+  theme_minimal() +
+  labs(y = "Block groups", x = "Coefficient of variation (total white population)")
+```
+
+
+Instead, we can aggregate the block groups to some other geography that makes sense contextually. That context changes based on the input variables. In this case we only care about contiguous block groups that look similar based on their white population. We will aggregate the block groups until each new aggregate meets some minimum cv threshold. Initially I set it to 10%, so it could go higher in later iterations.
+
+The aggregation algorithm created 230 new geography units. Notably, that is a better resolution than the 137 census tracts. We also are guaranteed some level of homogeneity, which is not necessarily true for tracts. Below are the new aggregations with the census tract boundaries overlayed. Fill color indicates the assigned region.
+
+```{r}
+colors <- randomcoloR::distinctColorPalette(k = 230)
+
+pal <- colorFactor(colors, domain = as.factor(aggregate$rids))
+
+leaflet(aggregate %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(as.character(rids)),
+  weight = 2,
+  opacity = 1,
+  color = NA,
+  fillOpacity = 0.7,
+  stroke = FALSE) %>%
+  addPolygons(data = tract %>% st_transform(4326),
+              color = "black",
+              weight = 2,
+              fillColor = NA,
+              fillOpacity = 0)
+```
+
+We see considerable improvement in the margins of error, but there are some that still fall above the 10% threshold so I can experiment more with other variables and thresholds. About 53% are still above the 0.12 mark, but the extremes are much closer to the desired threshold.
+
+```{r}
+aggregate_rids <- aggregate %>%
+  select(-ALAND, -AWATER) %>%
+  left_join(percent_white_bg %>% st_set_geometry(NULL)) %>%
+  group_by(rids) %>%
+  summarise(sumest = sum(estimate_not_hispanic_or_latino_white_alone),
+            moeest = tidycensus::moe_sum(margin_of_error_not_hispanic_or_latino_white_alone, estimate = estimate_not_hispanic_or_latino_white_alone)) %>%
+  filter(rids != -999) %>%
+  mutate(cv = (moeest / 1.645)/sumest)
+
+#sum(aggregate_rids$cv > 0.12, na.rm = TRUE) /nrow(aggregate_rids)
+
+ggplot(aggregate_rids, aes(x = cv)) +
+  geom_histogram(fill = "#688da6", color = "white") +
+  scale_x_continuous(breaks = seq(0, 1, .1)) +
+  theme_minimal() +
+  labs(y = "Aggregates/jolly tracts", x = "Coefficient of variation (total white population)")
+
+pal <- colorNumeric("PuBu", domain = percent_white_bg$cv, na.color = "#edf0f2")
+
+leaflet(aggregate_rids %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cv),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  fillOpacity = 0.7) %>%
+  addLegend(position = "bottomright",
+            pal = pal,
+            values = ~cv,
+            title = "Aggregated coefficient of variation")
+```
+
