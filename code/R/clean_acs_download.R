@@ -105,3 +105,17 @@ target_moe_metc <- race_moe %>%
 
 write_csv(target_estimates_metc, "code/metc_data/target/target_estimates_metc.csv")
 write_csv(target_moe_metc, "code/metc_data/target/target_moe_metc.csv")
+
+
+####### BLOCK GROUPS
+
+bg <- reduce(
+  map(c("Anoka", "Carver", "Dakota", "Hennepin", "Ramsey", "Scott", "Carver"), function(x) {
+    tigris::block_groups(state = "MN", county = x)
+  }), 
+  rbind
+)
+
+bg <- st_as_sf(bg)
+
+st_write(bg, "code/metc_data/target/bg_metc.shp")
