@@ -1,3 +1,6 @@
+~%2Fcensusmander%2F.gitignore="462FEB71"
+~%2Fcensusmander%2Fcode%2FR%2Fclean_acs_download.R="362CD6FE"
+~%2Fcensusmander%2Fcode%2FR%2Fget_variables.R="15D77244"
 ~%2Fcensusmander%2Fcode%2Fexample_data%2Fall_count_est_12420.csv="706B0789"
 ~%2Fcensusmander%2Fcode%2Fexample_data%2Fall_exclude_12420.csv="21CB2446"
 ~%2Fcensusmander%2Fcode%2Fexample_data%2Fall_exclude_ramsey.csv="4275C2D4"
