@@ -1,6 +1,0 @@
-"0","sum(percent_white_bg$cv > 0.12, na.rm = TRUE) /nrow(percent_white_bg)
-"
-"1","[1]"
-"1"," 0.6957606"
-"1","
-"

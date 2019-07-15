@@ -1,5 +1,5 @@
 {
-    "path" : "~/censusmander/code/example_data",
+    "path" : "~/censusmander/code/metc_data/target",
     "sortOrder" : [
         {
             "ascending" : true,
