@@ -5,6 +5,7 @@ output:
   html_document:
     theme: "cosmo"
     code_folding: hide
+    toc: true
 ---
 
 ```{r include = FALSE}
@@ -42,6 +43,8 @@ tract <- tracts(state = "MN", county = "Ramsey") %>%
 aggregate <- st_read("code/output/prototype.shp") %>%
   st_transform(26915)
 
+musa_4var_cv28 <- st_read("code/output/musa_4var_cv28.shp")
+
 ```
 
 
@@ -51,7 +54,7 @@ As an initial picture, there are 401 block groups in Ramsey county.
 leaflet(bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = "#faf7cf",
-              weight = 2,
+              weight = 1,
               opacity = 0.8,
               color = "#b0b5bf",
               fillOpacity = 0.6)
@@ -64,7 +67,7 @@ And 137 census tracts.
 leaflet(tract %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = "#e89f9b",
-              weight = 2,
+              weight = 1,
               opacity = 0.8,
               color = "#b0b5bf",
               fillOpacity = 0.6)
@@ -82,7 +85,7 @@ pal <- colorQuantile("RdPu", domain = percent_white_bg$estimate_not_hispanic_or_
 leaflet(percent_white_bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(estimate_not_hispanic_or_latino_white_alone),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -103,7 +106,7 @@ pal <- colorQuantile("PuBu", domain = percent_white_bg$cv, na.color = "#edf0f2",
 leaflet(percent_white_bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(cv),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -138,14 +141,14 @@ pal <- colorFactor(colors, domain = as.factor(aggregate$rids))
 leaflet(aggregate %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(as.character(rids)),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = NA,
   fillOpacity = 0.7,
   stroke = FALSE) %>%
   addPolygons(data = tract %>% st_transform(4326),
               color = "black",
-              weight = 2,
+              weight = 1,
               fillColor = NA,
               fillOpacity = 0)
 ```
@@ -175,7 +178,7 @@ pal <- colorQuantile("PuBu", domain = percent_white_bg$cv, na.color = "#edf0f2",
 leaflet(aggregate_rids %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(cv),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -231,7 +234,7 @@ As an initial picture, there are 2,085 block groups in the seven county region.
 leaflet(bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = "#faf7cf",
-              weight = 2,
+              weight = 1,
               opacity = 0.8,
               color = "#b0b5bf",
               fillOpacity = 0.6)
@@ -244,7 +247,7 @@ And 704 census tracts.
 leaflet(tract %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = "#e89f9b",
-              weight = 2,
+              weight = 1,
               opacity = 0.8,
               color = "#b0b5bf",
               fillOpacity = 0.6)
@@ -267,7 +270,7 @@ pal <- colorQuantile("RdPu", domain = demographics_bg$percent_white, n = 5)
 leaflet(demographics_bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(percent_white),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -286,7 +289,7 @@ pal <- colorQuantile("OrRd", domain = demographics_bg$percent_over_65, n = 5)
 leaflet(demographics_bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(percent_over_65),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -304,7 +307,7 @@ pal <- colorQuantile("PuRd", domain = demographics_bg$hu_since_2000, n = 4)
 leaflet(demographics_bg %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(hu_since_2000),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = "white",
   fillOpacity = 0.7) %>%
@@ -325,14 +328,14 @@ pal <- colorFactor(colors, domain = as.factor(aggregate$rids))
 leaflet(aggregate %>% st_transform(4326)) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolygons(fillColor = ~pal(as.character(rids)),
-  weight = 2,
+  weight = 1,
   opacity = 1,
   color = NA,
   fillOpacity = 0.7,
   stroke = FALSE) %>%
   addPolygons(data = tract %>% st_transform(4326),
               color = "black",
-              weight = 2,
+              weight = 1,
               fillColor = NA,
               fillOpacity = 0)
 ```
@@ -350,130 +353,280 @@ aggregate_rids <- aggregate %>%
             sumest_under18 = sum(under18),
             sumest_over65 = sum(over65),
             sumest_hu2000 = sum(built_after_2000),
+            sumest_hu = sum(totalhu),
             moeest_white = tidycensus::moe_sum(totalwhite_moe, estimate = totalwhite),
             moeest_pop = moe_sum(totalppl_moe, estimate = totalppl),
             moeest_under18 = moe_sum(under18_moe, estimate = under18),
             moeest_over65 = moe_sum(over65_moe, estimate = over65),
-            moeest_hu2000 = moe_sum(built_after_2000_moe, estimate = built_after_2000)) %>%
+            moeest_hu2000 = moe_sum(built_after_2000_moe, estimate = built_after_2000),
+            moeest_hu = moe_sum(totalhu_moe, estimate = totalhu)) %>%
   filter(rids != -999) 
 ```
 
-On the map below you can view the original variables within the boundaries of the Jolly tracts.
-
-(Tip: To better see the Jolly tract boundaries, select that layer last.)
-
+The new calculated variables show the same general distribution of values.
 
 ```{r}
-pal_hu <- colorQuantile("PuRd", domain = demographics_bg$hu_since_2000, n = 4)
-pal_65 <- colorQuantile("OrRd", domain = demographics_bg$percent_over_65, n = 5)
-pal_white <- colorQuantile("RdPu", domain = demographics_bg$percent_white, n = 5)
+ggplot(demographics_bg, aes(x = percent_over_65)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(demographics_bg$percent_over_65, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Block groups- percent over 65", x = "Percent over 65")
 
-leaflet() %>%
-  # Base groups
-  addTiles(group = "OSM (default)") %>%
-  addProviderTiles(providers$CartoDB.Positron, group = "Carto basemap") %>%
-  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "OSM black and white") %>%
-  # Overlay groups
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_hu(hu_since_2000),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Housing stock since 2000") %>%
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_65(percent_over_65),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Population over 65") %>%
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_white(percent_white),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Percent white") %>%
-  addPolygons(data = aggregate_rids %>% st_transform(4326),
-              color = "black",
-              weight = 2,
-              fillColor = NA,
-              fillOpacity = 0,
-              group = "Jolly tract boundary") %>%
-  addLegend(position = "bottomright",
-            pal = pal_hu,
-            values = ~hu_since_2000,
-            title = "Housing stock since 2000",
-            group = "Housing stock since 2000") %>%
-    addLegend(position = "bottomright",
-              pal = pal_65,
-              values = ~percent_over_65,
-              title = "Population over 65",
-              group = "Population over 65") %>%
-    addLegend(position = "bottomright",
-              pal = pal_white,
-              values = ~percent_white,
-              title = "Percent white",
-              group = "Percent white") %>%
-  # Layers control
-  addLayersControl(
-    baseGroups = c("OSM (default)", "Carto basemap", "OSM black and white"),
-    overlayGroups = c("Housing stock since 2000", "Population over 65", "Percent white", "Jolly tract boundary"),
-    options = layersControlOptions(collapsed = FALSE))
+ggplot(aggregate_rids, aes(x = sumest_over65 / sumest_pop)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(sumest_over65 / sumest_pop, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Jolly tracts- percent over 65", x = "Percent over 65")
+
+ggplot(demographics_bg, aes(x = percent_white)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(percent_white, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Block groups- percent white", x = "Percent white")
+
+ggplot(aggregate_rids, aes(x = sumest_white / sumest_pop)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(sumest_white / sumest_pop, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Jolly tracts- percent white", x = "Percent white")
+
+ggplot(demographics_bg, aes(x = hu_since_2000)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(hu_since_2000, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Block groups- percent of housing built since 2000", x = "Percent of housing built since 2000")
+
+ggplot(aggregate_rids, aes(x = sumest_hu2000 / sumest_hu)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(aes(xintercept = median(sumest_hu2000 / sumest_hu, na.rm = TRUE)), color = "#4a70c2") +
+  theme_minimal() +
+  xlim(c(0,1)) +
+  labs(title = "Jolly tracts- percent of housing built since 2000", x = "Percent of housing built since 2000")
 ```
 
-We can also look at the clustering variables in their new boundaries.
+# MUSA study area: Percent White, Under 18, Over 65, Housing Units since 2000
+
+After trying the method on the full seven county region, I filtered out just the study area. The algorithm took about 2 hours to run in total.
+
+The study area has 2,001 block groups. 
 
 ```{r}
-pal_hu <- colorQuantile("PuRd", domain = demographics_bg$hu_since_2000, n = 4)
-pal_65 <- colorQuantile("OrRd", domain = demographics_bg$percent_over_65, n = 5)
-pal_white <- colorQuantile("RdPu", domain = demographics_bg$percent_white, n = 5)
+bg <- st_read("code/metc_data/target/bg_musa.shp") %>%
+  st_transform(26915) 
 
-leaflet() %>%
-  # Base groups
-  addTiles(group = "OSM (default)") %>%
-  addProviderTiles(providers$CartoDB.Positron, group = "Carto basemap") %>%
-  addProviderTiles(providers$OpenStreetMap.BlackAndWhite, group = "OSM black and white") %>%
-  # Overlay groups
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_hu(hu_since_2000),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Housing stock since 2000") %>%
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_65(percent_over_65),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Population over 65") %>%
-  addPolygons(data = demographics_bg %>% st_transform(4326), 
-              fillColor = ~pal_white(percent_white),
-  weight = 2,
-  opacity = 1,
-  color = NA,
-  stroke = FALSE,
-  fillOpacity = 0.7,
-  group = "Percent white") %>%
-  addPolygons(data = aggregate_rids %>% st_transform(4326),
+leaflet(bg %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = "#faf7cf",
+              weight = 1,
+              opacity = 1,
+              color = "#b0b5bf",
+              fillOpacity = 1)
+```
+
+And 957 jolly tracts. This is an improvement in resolution compared to the 673 census tracts. On this map the census tract boundaries are overlayed on the Jolly tract boundaries. 
+
+```{r}
+musa_geoids <- read_csv("code/output/shp/SNC_Tracts_Incl_Cities.csv")
+aggregate_musa <- musa_4var_cv28 %>%
+  group_by(rids) %>%
+  count()
+colors <- randomcoloR::distinctColorPalette(k = 230)
+
+pal <- colorFactor(colors, domain = as.factor(aggregate_musa$rids))
+
+leaflet(aggregate_musa %>% st_transform(4326)) %>%
+ addProviderTiles(providers$CartoDB.Positron, group = "Carto basemap") %>%
+  addProviderTiles(providers$OpenStreetMap, group = "OpenStreetMap") %>%
+  addPolygons(fillColor = ~pal(as.character(rids)),
+  weight = 1,
+  opacity =0.5,
+  color = "#e9edf7",
+  fillOpacity = 0.4,
+  stroke = TRUE,
+  highlight = highlightOptions(
+    weight = 7,
+    color = "#fafa70",
+    bringToFront = FALSE)) %>%
+  addPolylines(data = tract %>% filter(GEOID %in% musa_geoids$GEOID) %>% st_transform(4326),
               color = "black",
-              weight = 2,
-              fillColor = NA,
-              fillOpacity = 0,
-              group = "Jolly tract boundary") %>%
-  # Layers control
+              weight = 1) %>%
   addLayersControl(
-    baseGroups = c("OSM (default)", "Carto basemap", "OSM black and white"),
-    overlayGroups = c("Housing stock since 2000", "Population over 65", "Percent white", "Jolly tract boundary"),
+    baseGroups = c("Carto basemap", "OpenStreetMap"),
     options = layersControlOptions(collapsed = FALSE)
   )
+```
+
+
+```{r}
+labels <- sprintf(
+  "<strong>Block groups included: </strong>%g",
+  aggregate_musa$n
+) %>% lapply(htmltools::HTML)
+
+ncolors <- colorBin("BuPu", aggregate_musa$n, bins = seq(1, 13, 2))
+
+leaflet(aggregate_musa %>% st_transform(4326)) %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Carto basemap") %>%
+  addProviderTiles(providers$OpenStreetMap, group = "OpenStreetMap") %>%
+  addPolygons(fillColor = ~ncolors(n),
+  weight = 1,
+  opacity = 1,
+  color = "black",
+  fillOpacity = 0.7,
+  stroke = TRUE,
+  highlight = highlightOptions(
+    weight = 3,
+    color = "#fafa70",
+    bringToFront = TRUE),
+  label = labels,
+  labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px",
+    direction = "auto"),
+  group = "Jolly tracts") %>%
+  addLegend(pal = ncolors, values = ~n, opacity = 1, title = "Number of block groups",
+  position = "bottomright") %>%
+  addLayersControl(
+    baseGroups = c("Carto basemap", "OpenStreetMap"),
+    overlayGroups = c("Jolly tracts"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
+
+
+```{r}
+aggregate_rids_musa <- musa_4var_cv28 %>%
+  left_join(demographics_bg %>% st_set_geometry(NULL)) %>%
+  group_by(rids) %>%
+  summarise(sumest_white = sum(totalwhite),
+            sumest_pop = sum(totalppl),
+            sumest_under18 = sum(under18),
+            sumest_over65 = sum(over65),
+            sumest_hu2000 = sum(built_after_2000),
+            sumest_hu = sum(totalhu),
+            moeest_white = moe_sum(totalwhite_moe, estimate = totalwhite),
+            moeest_pop = moe_sum(totalppl_moe, estimate = totalppl),
+            moeest_under18 = moe_sum(under18_moe, estimate = under18),
+            moeest_over65 = moe_sum(over65_moe, estimate = over65),
+            moeest_hu2000 = moe_sum(built_after_2000_moe, estimate = built_after_2000),
+            moeest_hu = moe_sum(totalhu_moe, estimate = totalhu),
+            propest_white = sumest_white / sumest_pop,
+            propest_under18 = sumest_under18 / sumest_pop,
+            propest_over65 = sumest_over65 / sumest_pop,
+            propest_hu2000 = sumest_hu2000 / sumest_hu,
+            moeprop_white = moe_prop(sumest_white, sumest_pop, moeest_white, moeest_pop),
+            moeprop_under18 = moe_prop(sumest_under18, sumest_pop, moeest_under18, moeest_pop),
+            moeprop_over65 = moe_prop(sumest_over65, sumest_pop, moeest_over65, moeest_pop),
+            moeprop_hu2000 = moe_prop(sumest_hu2000, sumest_hu, moeest_hu2000, moeest_hu)) %>%
+  filter(rids != -999) 
+```
+
+The variables used to aggregate have primarily moderate to high reliability. The vertical lines mark the high reliability (cv < 0.12) and moderate reliability (cv < 0.4) thresholds according to the USCB. 
+
+
+```{r}
+ggplot(aggregate_rids_musa, aes(x = (moeprop_white / 1.645) / propest_white)) +
+  geom_density(fill = "#fa70a1", color = NA) + theme_minimal() +
+  labs(x = "CV: percent white") +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4)
+
+ggplot(aggregate_rids_musa, aes(x = (moeprop_under18 / 1.645) / propest_under18)) +
+  geom_density(fill = "#fa70a1", color = NA) + theme_minimal() +
+  labs(x = "CV: under 18 population") +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4)
+
+ggplot(aggregate_rids_musa, aes(x = (moeprop_over65 / 1.645) / propest_over65)) +
+  geom_density(fill = "#fa70a1", color = NA) + theme_minimal() +
+  labs(x = "CV: over65 population") +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4)
+
+ggplot(aggregate_rids_musa , aes(x = (moeprop_hu2000 / 1.645) / propest_hu2000)) +
+  geom_density(fill = "#fa70a1", color = NA) + theme_minimal() +
+  labs(x = "CV: housing built since 2000") +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4)
+```
+
+This is compared to the original block group margins of error.
+
+```{r}
+demographics_bg <- demographics_bg %>%
+  mutate(percent_under_18 = under18 / totalppl,
+         moe_percent_18 = moe_prop(under18, totalppl, under18_moe, totalppl_moe),
+         moe_percent_65 = moe_prop(over65, totalppl, over65_moe, totalppl_moe),
+         moe_percent_white = moe_prop(totalwhite, totalppl, totalwhite_moe, totalppl_moe),
+         moe_percent_hu2000 = moe_prop(built_after_2000, totalhu, built_after_2000_moe, totalhu_moe),
+         cv_percent_18 = (moe_percent_18 / 1.645)/ percent_under_18,
+         cv_percent_65 = (moe_percent_65 / 1.645)/ percent_over_65,
+         cv_percent_white = (moe_percent_white / 1.645) / percent_white,
+         cv_percent_hu2000 = (moe_percent_hu2000 / 1.645) / (hu_since_2000 ))
+
+
+ggplot(demographics_bg, aes(x = cv_percent_18)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4) +
+  theme_minimal() +
+  labs(title = "Block groups- percent under 18", x = "CV: Percent under 18")
+
+
+ggplot(demographics_bg, aes(x = cv_percent_65)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4) +
+  theme_minimal() +
+  labs(title = "Block groups- percent over 65", x = "CV: Percent over 65")
+
+
+ggplot(demographics_bg, aes(x = cv_percent_white)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4) +
+  theme_minimal() +
+  labs(title = "Block groups- percent white", x = "CV: Percent white")
+
+
+ggplot(demographics_bg, aes(x = cv_percent_hu2000)) +
+  geom_density(fill = "#f0e992", color = NA) +
+  geom_vline(xintercept = 0.12) +
+  geom_vline(xintercept = 0.4) +
+  theme_minimal() +
+  labs(title = "Block groups- percent of housing built since 2000", x = "CV: Percent of housing built since 2000")
+
+```
+
+Based on this information, it might be beneficial to build these again not using housing built since 2000. It seems to just have fairly unreliable estimates regardless. 
+
+On average, all of the variables show a slight decrease in CV, as expected. 
+
+```{r}
+aggregate_rids_musa_cv <- aggregate_rids_musa %>%
+  mutate(cv_percent_18 = (moeprop_under18 / 1.645) / propest_under18,
+         cv_percent_white = (moeprop_white / 1.645) / propest_white,
+         cv_percent_hu2000 = (moeprop_hu2000 / 1.645) / propest_hu2000,
+         cv_percent_65 = (moeprop_over65 / 1.645) / propest_over65) %>%
+  select(contains("cv")) %>%
+  st_set_geometry(NULL) %>%
+  mutate(set = "Jolly tracts")
+
+cv <- demographics_bg %>%
+  select(contains("cv")) %>%
+  st_set_geometry(NULL) %>%
+  mutate(set = "Block group") %>%
+  bind_rows(aggregate_rids_musa_cv) %>%
+  gather(key = "variable", value = "cv", 1:4)
+
+ggplot(cv, aes(x = set, y = cv)) +
+  geom_boxplot(fill = "#88B7B5") +
+  theme_minimal() +
+  facet_wrap(~variable, scales = "free")
 ```
 
