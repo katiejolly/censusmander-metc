@@ -1,0 +1,50 @@
+---
+title: "Jolly Tract Methodology"
+subtitle: "Data-Drive Regionalization of Census Geography"
+author: "Katie Jolly"
+output: 
+  html_document:
+    theme: "cosmo"
+    toc: true
+bibliography: bibliography.bib
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(fig.align = 'center', echo = FALSE)
+```
+
+
+# Background Research
+
+## Project Purpose
+
+With Census data there is always a tradeoff between resolution and precision. We want to use smaller geographies, block-groups for example, but those units have high margins of error. Larger geographies like tracts can help mitigate that, but they are also often not contextually meaningful. Smaller geographies are not aggregated in a way that tries to preserve underlying demographic patterns. This project is an exploration of methods to get margins of error comparable to or better than tracts, but with the underlying patterns of block groups. 
+
+## Typical Methods
+
+Every method of improving margins of error can be summarized as increasing the sample size. There are just some different ways to go about doing that [@regionalization].
+
+### Larger Geography
+
+The easiest solution to increasing the sample size is to just choose a larger geography. For example, if block groups do not have a reliable estimate, you could use tracts instead. But this is a coarse solution to a nuanced problem. There are other ways to maintain geographic detail while getting more reliable estimates.
+
+### Less Detail
+
+We might be interested in differences in median income across racial groups. If you look at median income for every racial group in small geographies, breaking up the population into small groups just decreases the sample size even more. Instead, for example, you could compare the white population with people of color. But, this abstraction isn't always good or possible. 
+
+## New: Data-Driven Regionalization
+
+Data-driven regionalization is the idea that you can use larger geographies that *try to maintain* the underlying patterns. There's some flexibility in the parameters, so you can allow different levels of error. The idea is fairly straightforward: if you have smaller geographies that have a mix of high and low incomes, you want your larger geographies to also have high and low incomes. Sometimes, though, a larger geography might instead show a middle income. This pattern is illustrated below [@regionalization] starting with tracts and creating regions. 
+
+```{r}
+knitr::include_graphics("https://journals.plos.org/plosone/article/figure/image?size=inline&id=info:doi/10.1371/journal.pone.0115626.g001")
+```
+
+
+# Algorithm Overview
+
+
+
+# Code and Data
+
+# References

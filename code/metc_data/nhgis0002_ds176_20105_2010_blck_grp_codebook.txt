@@ -1,0 +1,317 @@
+--------------------------------------------------------------------------------
+Codebook for NHGIS data file 'nhgis0002_ds176_20105_2010_blck_grp'
+--------------------------------------------------------------------------------
+ 
+Contents
+    - Data Summary
+    - Data Dictionary
+    - Citation and Use
+ 
+Additional documentation on NHGIS data sources is available at: 
+    https://www.nhgis.org/documentation/tabular-data 
+ 
+--------------------------------------------------------------------------------
+Data Summary
+--------------------------------------------------------------------------------
+ 
+Year:             2006-2010
+Geographic level: Block Group (by State--County--Census Tract)
+Extent:           Minnesota
+Dataset:          2010 American Community Survey: 5-Year Data [2006-2010, Block Groups & Larger Areas]
+   NHGIS code:    2006_2010_ACS5a
+   NHGIS ID:      ds176
+Breakdown(s):     Geographic Subarea:
+                     Total area (00)
+Data type(s):     (E) Estimates
+                  (M) Margins of error
+ 
+Tables:
+ 
+1. Household Income in the Past 12 Months (in 2010 Inflation-Adjusted Dollars)
+   Universe:    Households
+   Source code: B19001
+   NHGIS code:  JOH
+ 
+2. Gross Rent
+   Universe:    Renter-occupied housing units
+   Source code: B25063
+   NHGIS code:  JS4
+ 
+3. Value
+   Universe:    Owner-occupied housing units
+   Source code: B25075
+   NHGIS code:  JTG
+ 
+--------------------------------------------------------------------------------
+Data Dictionary
+--------------------------------------------------------------------------------
+ 
+Context Fields 
+        GISJOIN:     GIS Join Match Code
+        YEAR:        Data File Year
+        REGIONA:     Region Code
+        DIVISIONA:   Division Code
+        STATE:       State Name
+        STATEA:      State Code
+        COUNTY:      County Name
+        COUNTYA:     County Code
+        COUSUBA:     County Subdivision Code
+        PLACEA:      Place Code
+        TRACTA:      Census Tract Code
+        BLKGRPA:     Block Group Code
+        CONCITA:     Consolidated City Code
+        AIANHHA:     American Indian Area/Alaska Native Area/Hawaiian Home Land Code
+        RES_ONLYA:   American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code
+        TRUSTA:      American Indian Reservation with Trust Lands; trust lands only Code
+        AITSCEA:     Tribal Subdivision/Remainder Code
+        ANRCA:       Alaska Native Regional Corporation Code
+        CBSAA:       Metropolitan Statistical Area/Micropolitan Statistical Area Code
+        CSAA:        Combined Statistical Area Code
+        METDIVA:     Metropolitan Division Code
+        NECTAA:      New England City and Town Area Code
+        CNECTAA:     Combined New England City and Town Area Code
+        NECTADIVA:   New England City and Town Area Division Code
+        UAA:         Urban Area Code
+        CDCURRA:     Congressional District (111th Congress) Code
+        SLDUA:       State Legislative District (Upper Chamber) Code
+        SLDLA:       State Legislative District (Lower Chamber) Code
+        SUBMCDA:     Subminor Civil Division Code
+        SDELMA:      School District (Elementary)/Remainder Code
+        SDSECA:      School District (Secondary)/Remainder Code
+        SDUNIA:      School District (Unified)/Remainder Code
+        PUMA5A:      Public Use Microdata Sample Area (PUMA) Code
+        BTTRA:       Tribal Census Tract Code
+        BTBGA:       Tribal Block Group Code
+ 
+Data Type (E):
+    Estimates
+ 
+        NAME_E:      Area Name
+ 
+    Table 1:     Household Income in the Past 12 Months (in 2010 Inflation-Adjusted Dollars)
+    Universe:    Households
+    Source code: B19001
+    NHGIS code:  JOH
+        JOHE001:     Total
+        JOHE002:     Less than $10,000
+        JOHE003:     $10,000 to $14,999
+        JOHE004:     $15,000 to $19,999
+        JOHE005:     $20,000 to $24,999
+        JOHE006:     $25,000 to $29,999
+        JOHE007:     $30,000 to $34,999
+        JOHE008:     $35,000 to $39,999
+        JOHE009:     $40,000 to $44,999
+        JOHE010:     $45,000 to $49,999
+        JOHE011:     $50,000 to $59,999
+        JOHE012:     $60,000 to $74,999
+        JOHE013:     $75,000 to $99,999
+        JOHE014:     $100,000 to $124,999
+        JOHE015:     $125,000 to $149,999
+        JOHE016:     $150,000 to $199,999
+        JOHE017:     $200,000 or more
+ 
+    Table 2:     Gross Rent
+    Universe:    Renter-occupied housing units
+    Source code: B25063
+    NHGIS code:  JS4
+        JS4E001:     Total
+        JS4E002:     With cash rent
+        JS4E003:     With cash rent: Less than $100
+        JS4E004:     With cash rent: $100 to $149
+        JS4E005:     With cash rent: $150 to $199
+        JS4E006:     With cash rent: $200 to $249
+        JS4E007:     With cash rent: $250 to $299
+        JS4E008:     With cash rent: $300 to $349
+        JS4E009:     With cash rent: $350 to $399
+        JS4E010:     With cash rent: $400 to $449
+        JS4E011:     With cash rent: $450 to $499
+        JS4E012:     With cash rent: $500 to $549
+        JS4E013:     With cash rent: $550 to $599
+        JS4E014:     With cash rent: $600 to $649
+        JS4E015:     With cash rent: $650 to $699
+        JS4E016:     With cash rent: $700 to $749
+        JS4E017:     With cash rent: $750 to $799
+        JS4E018:     With cash rent: $800 to $899
+        JS4E019:     With cash rent: $900 to $999
+        JS4E020:     With cash rent: $1,000 to $1,249
+        JS4E021:     With cash rent: $1,250 to $1,499
+        JS4E022:     With cash rent: $1,500 to $1,999
+        JS4E023:     With cash rent: $2,000 or more
+        JS4E024:     No cash rent
+ 
+    Table 3:     Value
+    Universe:    Owner-occupied housing units
+    Source code: B25075
+    NHGIS code:  JTG
+        JTGE001:     Total
+        JTGE002:     Less than $10,000
+        JTGE003:     $10,000 to $14,999
+        JTGE004:     $15,000 to $19,999
+        JTGE005:     $20,000 to $24,999
+        JTGE006:     $25,000 to $29,999
+        JTGE007:     $30,000 to $34,999
+        JTGE008:     $35,000 to $39,999
+        JTGE009:     $40,000 to $49,999
+        JTGE010:     $50,000 to $59,999
+        JTGE011:     $60,000 to $69,999
+        JTGE012:     $70,000 to $79,999
+        JTGE013:     $80,000 to $89,999
+        JTGE014:     $90,000 to $99,999
+        JTGE015:     $100,000 to $124,999
+        JTGE016:     $125,000 to $149,999
+        JTGE017:     $150,000 to $174,999
+        JTGE018:     $175,000 to $199,999
+        JTGE019:     $200,000 to $249,999
+        JTGE020:     $250,000 to $299,999
+        JTGE021:     $300,000 to $399,999
+        JTGE022:     $400,000 to $499,999
+        JTGE023:     $500,000 to $749,999
+        JTGE024:     $750,000 to $999,999
+        JTGE025:     $1,000,000 or more
+ 
+Data Type (M):
+    Margins of error
+ 
+        NAME_M:      Area Name
+ 
+    Table 1:     Household Income in the Past 12 Months (in 2010 Inflation-Adjusted Dollars)
+    Universe:    Households
+    Source code: B19001
+    NHGIS code:  JOH
+        JOHM001:     Total
+        JOHM002:     Less than $10,000
+        JOHM003:     $10,000 to $14,999
+        JOHM004:     $15,000 to $19,999
+        JOHM005:     $20,000 to $24,999
+        JOHM006:     $25,000 to $29,999
+        JOHM007:     $30,000 to $34,999
+        JOHM008:     $35,000 to $39,999
+        JOHM009:     $40,000 to $44,999
+        JOHM010:     $45,000 to $49,999
+        JOHM011:     $50,000 to $59,999
+        JOHM012:     $60,000 to $74,999
+        JOHM013:     $75,000 to $99,999
+        JOHM014:     $100,000 to $124,999
+        JOHM015:     $125,000 to $149,999
+        JOHM016:     $150,000 to $199,999
+        JOHM017:     $200,000 or more
+ 
+    Table 2:     Gross Rent
+    Universe:    Renter-occupied housing units
+    Source code: B25063
+    NHGIS code:  JS4
+        JS4M001:     Total
+        JS4M002:     With cash rent
+        JS4M003:     With cash rent: Less than $100
+        JS4M004:     With cash rent: $100 to $149
+        JS4M005:     With cash rent: $150 to $199
+        JS4M006:     With cash rent: $200 to $249
+        JS4M007:     With cash rent: $250 to $299
+        JS4M008:     With cash rent: $300 to $349
+        JS4M009:     With cash rent: $350 to $399
+        JS4M010:     With cash rent: $400 to $449
+        JS4M011:     With cash rent: $450 to $499
+        JS4M012:     With cash rent: $500 to $549
+        JS4M013:     With cash rent: $550 to $599
+        JS4M014:     With cash rent: $600 to $649
+        JS4M015:     With cash rent: $650 to $699
+        JS4M016:     With cash rent: $700 to $749
+        JS4M017:     With cash rent: $750 to $799
+        JS4M018:     With cash rent: $800 to $899
+        JS4M019:     With cash rent: $900 to $999
+        JS4M020:     With cash rent: $1,000 to $1,249
+        JS4M021:     With cash rent: $1,250 to $1,499
+        JS4M022:     With cash rent: $1,500 to $1,999
+        JS4M023:     With cash rent: $2,000 or more
+        JS4M024:     No cash rent
+ 
+    Table 3:     Value
+    Universe:    Owner-occupied housing units
+    Source code: B25075
+    NHGIS code:  JTG
+        JTGM001:     Total
+        JTGM002:     Less than $10,000
+        JTGM003:     $10,000 to $14,999
+        JTGM004:     $15,000 to $19,999
+        JTGM005:     $20,000 to $24,999
+        JTGM006:     $25,000 to $29,999
+        JTGM007:     $30,000 to $34,999
+        JTGM008:     $35,000 to $39,999
+        JTGM009:     $40,000 to $49,999
+        JTGM010:     $50,000 to $59,999
+        JTGM011:     $60,000 to $69,999
+        JTGM012:     $70,000 to $79,999
+        JTGM013:     $80,000 to $89,999
+        JTGM014:     $90,000 to $99,999
+        JTGM015:     $100,000 to $124,999
+        JTGM016:     $125,000 to $149,999
+        JTGM017:     $150,000 to $174,999
+        JTGM018:     $175,000 to $199,999
+        JTGM019:     $200,000 to $249,999
+        JTGM020:     $250,000 to $299,999
+        JTGM021:     $300,000 to $399,999
+        JTGM022:     $400,000 to $499,999
+        JTGM023:     $500,000 to $749,999
+        JTGM024:     $750,000 to $999,999
+        JTGM025:     $1,000,000 or more
+ 
+--------------------------------------------------------------------------------
+Citation and Use of NHGIS Data
+--------------------------------------------------------------------------------
+ 
+All persons are granted a limited license to use this documentation and the
+accompanying data, subject to the following conditions:
+
+* REDISTRIBUTION: You will not redistribute the data without permission.
+
+  You may publish a subset of the data to meet journal requirements for accessing 
+  data related to a particular publication. Contact us for permission for any other 
+  redistribution; we will consider requests for free and commercial redistribution.
+
+* CITATION: You will cite NHGIS appropriately.
+
+    * Publications and research reports employing NHGIS data (either tabular or GIS) 
+      should include the following citation:
+
+        Steven Manson, Jonathan Schroeder, David Van Riper, and Steven Ruggles. 
+        IPUMS National Historical Geographic Information System: Version 13.0 
+        [Database]. Minneapolis: University of Minnesota. 2018. 
+        http://doi.org/10.18128/D050.V13.0
+
+    * Publications and research reports employing school attendance areas data 
+      (either tabular or GIS) must cite it appropriately. The citation should 
+      include the following:
+
+        The College of William and Mary and the Minnesota Population Center.
+        School Attendance Boundary Information System (SABINS): Version 1.0.
+        Minneapolis, MN: University of Minnesota 2011.
+
+    * For policy briefs, online resources, or articles in the popular press, we 
+      recommend that you cite the use of NHGIS data as follows:
+
+        IPUMS NHGIS, University of Minnesota, www.nhgis.org.
+
+    * If possible, citations involving school attendance areas should also include
+      the URL for the SABINS site:
+
+        http://www.sabinsdata.org/.
+
+These terms of use are a legally binding agreement. You can use the data only in 
+accordance with these terms, and any other use is a violation of the agreement. 
+Violations may result in revocation of the agreement and prohibition from using other 
+IPUMS data. If IPUMS or our partners are harmed from your violation, you are 
+responsible for all damages, including reasonable attorney's fees and expenses.
+        
+In addition, we request that users send us a copy of any publications, research
+reports, or educational material making use of the data or documentation.
+
+Send electronic material to: nhgis@umn.edu
+
+Printed matter should be sent to:
+
+    IPUMS NHGIS
+    Institute for Social Research and Data Innovation
+    University of Minnesota
+    50 Willey Hall
+    225 19th Ave S
+    Minneapolis, MN 55455

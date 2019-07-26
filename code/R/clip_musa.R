@@ -1,6 +1,7 @@
 library(tigris)
 library(sf)
 library(leaflet)
+library(tidyverse)
 
 # musa <- st_read("code/output/shp/plan_musa_composite.gpkg") %>% # from MNGEO https://gisdata.mn.gov/dataset/us-mn-state-metc-plan-musa-composite
 #   rename(geometry = geom) %>%
@@ -52,6 +53,13 @@ target_estimates_musa <- target_estimates_metc %>%
   distinct(id, .keep_all= TRUE) %>%
   select(-tract)
 
+target_estimates_musa2var <- target_estimates_metc %>%
+  mutate(tract = str_sub(id, 1, 11)) %>%
+  inner_join(musa_geoids %>% mutate(GEOID = as.character(GEOID)), by = c("tract" = "GEOID")) %>%
+  distinct(id, .keep_all= TRUE) %>%
+  select(-tract, -c(4,5,8,9))
+write_csv(target_estimates_musa2var, "code/metc_data/target/target_estimates_musa2var.csv")
+
 write_csv(target_estimates_musa, "code/metc_data/target/target_estimates_musa.csv")
 
 target_moe_metc <- read_csv("code/metc_data/target/target_moe_metc.csv")
@@ -63,6 +71,13 @@ target_moe_musa <- target_moe_metc %>%
   select(-tract)
 
 write_csv(target_moe_musa, "code/metc_data/target/target_moe_musa.csv")
+
+target_moe_musa2var <- target_moe_metc %>%
+  mutate(tract = str_sub(id, 1, 11)) %>%
+  inner_join(musa_geoids %>% mutate(GEOID = as.character(GEOID)), by = c("tract" = "GEOID")) %>%
+  distinct(id, .keep_all= TRUE) %>%
+  select(-tract, -c(4,5,8,9))
+write_csv(target_moe_musa2var, "code/metc_data/target/target_moe_musa2var.csv")
 
 
 target_population <- read_csv("code/metc_data/target/target_population.csv")
